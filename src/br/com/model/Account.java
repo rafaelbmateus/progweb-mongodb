@@ -1,6 +1,7 @@
 package br.com.model;
 
 public class Account {
+	private Oid _id;
 	private int number;
 	private User user;
 	private Agency agency;
@@ -45,5 +46,26 @@ public class Account {
 
 	public void setLimit(double limit) {
 		this.limit = limit;
+	}
+
+	public Oid get_id() {
+		return _id;
+	}
+
+	public void set_id(Oid _id) {
+		this._id = _id;
+	}
+
+	public class Oid {
+		String $oid;
+
+		public String get$oid() {
+			return $oid;
+		}
+
+		public void set$oid(String $oid) {
+			this.$oid = $oid;
+		}
+
 	}
 }

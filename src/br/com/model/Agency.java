@@ -1,6 +1,7 @@
 package br.com.model;
 
 public class Agency {
+	private Oid _id;
 	private int number;
 	private String name;
 	private Address address;
@@ -27,5 +28,26 @@ public class Agency {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	
+	public Oid get_id() {
+		return _id;
+	}
+
+	public void set_id(Oid _id) {
+		this._id = _id;
+	}
+
+	public class Oid {
+		String $oid;
+
+		public String get$oid() {
+			return $oid;
+		}
+
+		public void set$oid(String $oid) {
+			this.$oid = $oid;
+		}
+
 	}
 }

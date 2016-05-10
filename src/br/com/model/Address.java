@@ -1,6 +1,7 @@
 package br.com.model;
 
 public class Address {
+	private Oid _id;
 	private String street;
 	private String uf;
 	private String city;
@@ -54,5 +55,26 @@ public class Address {
 
 	public void setCep(int cep) {
 		this.cep = cep;
+	}
+
+	public Oid get_id() {
+		return _id;
+	}
+
+	public void set_id(Oid _id) {
+		this._id = _id;
+	}
+
+	public class Oid {
+		String $oid;
+
+		public String get$oid() {
+			return $oid;
+		}
+
+		public void set$oid(String $oid) {
+			this.$oid = $oid;
+		}
+
 	}
 }

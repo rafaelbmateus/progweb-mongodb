@@ -2,6 +2,7 @@ package br.com.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -21,7 +22,7 @@ public class UserDao {
 
 	}
 
-	public UserDao(User funcionario) {
+	public UserDao(User user) {
 		this.setUser(user);
 	}
 
@@ -38,13 +39,13 @@ public class UserDao {
 		return gson.toJson(this.getUser());
 	}
 
-	public void cadastrar() {
+	public void create() {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
 		mongo.inserir(this.jsonUser());
 	}
 
-	public List<User> getAll() {
+	public List<User> getList() {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
 		DBCollection collectionMongo = mongo.getCollection();
@@ -85,5 +86,5 @@ public class UserDao {
 		}
 		return serializeble;
 	}
-
+	
 }
