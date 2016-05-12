@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -25,15 +26,15 @@ public class AccountDao {
 		this.setAccount(account);
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
 	public Account getAccount() {
 		return account;
 	}
 
-	public String jsonAccount() {
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	private String jsonUser() {
 		Gson gson = new Gson();
 		return gson.toJson(this.getAccount());
 	}
@@ -41,26 +42,43 @@ public class AccountDao {
 	public void create() {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
-		mongo.inserir(this.jsonAccount());
+		mongo.inserir(this.jsonUser());
 	}
 
 	public List<Account> getList() {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
-		DBCollection collection = mongo.getCollection();
+		DBCollection collectionMongo = mongo.getCollection();
 		Gson gson = new Gson();
 		List<Account> accounts = new ArrayList<Account>();
-		for (String serealizable : listOne(collection, null)) {
+		for (String serializable : listOne(collectionMongo, null)) {
 			Account account = new Account();
-			account = gson.fromJson(serealizable, Account.class);
+			account = gson.fromJson(serializable, Account.class);
 			accounts.add(account);
 		}
 		return accounts;
 	}
 
-	private List<String> listOne(DBCollection banco, DBObject query) {
+	public List<Account> consultOne(String key, String reg) {
+		ConnectMongo mongo = ConnectMongo.getInstance();
+		mongo.setDb(database, collection);
 
-		DBCursor cursor = banco.find(query);
+		DBCollection collectionMongo = mongo.getCollection();
+		BasicDBObject query = new BasicDBObject();
+		query.put(key, new BasicDBObject("$regex", reg).append("$options", "i"));
+		Gson gson = new Gson();
+		List<Account> accounts = new ArrayList<Account>();
+		for (String serializable : listOne(collectionMongo, query)) {
+			Account account = new Account();
+			account = gson.fromJson(serializable, Account.class);
+			accounts.add(account);
+		}
+		return accounts;
+	}
+
+	private List<String> listOne(DBCollection database, DBObject query) {
+
+		DBCursor cursor = database.find(query);
 		List<String> serializeble = new ArrayList<String>();
 		while (cursor.hasNext()) {
 			String json = JSON.serialize(cursor.next());

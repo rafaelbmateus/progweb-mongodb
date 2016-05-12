@@ -11,32 +11,32 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 import br.com.factory.ConnectMongo;
-import br.com.model.User;
+import br.com.model.Agency;
 
-public class UserDao {
-	private User user;
+public class AgencyDao {
+	private Agency agency;
 	private static String database = "bank-mongodb";
-	private static String collection = "users";
+	private static String collection = "agencies";
 
-	public UserDao() {
+	public AgencyDao() {
 
 	}
 
-	public UserDao(User user) {
-		this.setUser(user);
+	public AgencyDao(Agency agency) {
+		this.setAgency(agency);
 	}
 
-	public User getUser() {
-		return user;
+	public Agency getAgency() {
+		return agency;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAgency(Agency agency) {
+		this.agency = agency;
 	}
 
 	private String jsonUser() {
 		Gson gson = new Gson();
-		return gson.toJson(this.getUser());
+		return gson.toJson(this.getAgency());
 	}
 
 	public void create() {
@@ -45,21 +45,21 @@ public class UserDao {
 		mongo.inserir(this.jsonUser());
 	}
 
-	public List<User> getList() {
+	public List<Agency> getList() {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
 		DBCollection collectionMongo = mongo.getCollection();
 		Gson gson = new Gson();
-		List<User> users = new ArrayList<User>();
+		List<Agency> agencies = new ArrayList<Agency>();
 		for (String serializable : listOne(collectionMongo, null)) {
-			User user = new User();
-			user = gson.fromJson(serializable, User.class);
-			users.add(user);
+			Agency agency = new Agency();
+			agency = gson.fromJson(serializable, Agency.class);
+			agencies.add(agency);
 		}
-		return users;
+		return agencies;
 	}
 
-	public List<User> consultOne(String key, String reg) {
+	public List<Agency> consultOne(String key, String reg) {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
 
@@ -67,13 +67,13 @@ public class UserDao {
 		BasicDBObject query = new BasicDBObject();
 		query.put(key, new BasicDBObject("$regex", reg).append("$options", "i"));
 		Gson gson = new Gson();
-		List<User> funcionarios = new ArrayList<User>();
+		List<Agency> agencies = new ArrayList<Agency>();
 		for (String serializable : listOne(collectionMongo, query)) {
-			User user = new User();
-			user = gson.fromJson(serializable, User.class);
-			funcionarios.add(user);
+			Agency agency = new Agency();
+			agency = gson.fromJson(serializable, Agency.class);
+			agencies.add(agency);
 		}
-		return funcionarios;
+		return agencies;
 	}
 
 	private List<String> listOne(DBCollection database, DBObject query) {

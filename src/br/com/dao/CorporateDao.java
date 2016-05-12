@@ -11,55 +11,56 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 import br.com.factory.ConnectMongo;
-import br.com.model.User;
+import br.com.model.Corporate;
 
-public class UserDao {
-	private User user;
+public class CorporateDao {
+	private Corporate corporate;
 	private static String database = "bank-mongodb";
-	private static String collection = "users";
-
-	public UserDao() {
-
+	private static String collection = "corporates";
+	
+	public CorporateDao(){
+		
 	}
-
-	public UserDao(User user) {
-		this.setUser(user);
+	
+	public CorporateDao(Corporate corporate){
+		this.setCorporate(corporate);
 	}
-
-	public User getUser() {
-		return user;
+	
+	
+	public Corporate getCorporate(){
+		return corporate;
 	}
-
-	public void setUser(User user) {
-		this.user = user;
+	
+	public void setCorporate(Corporate corporate){
+		this.corporate = corporate;
 	}
-
-	private String jsonUser() {
+	
+	private String jsonCorporate(){
 		Gson gson = new Gson();
-		return gson.toJson(this.getUser());
+		return gson.toJson(this.getCorporate());
 	}
-
-	public void create() {
+	
+	public void create(){
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
-		mongo.inserir(this.jsonUser());
+		mongo.inserir(this.jsonCorporate());
 	}
-
-	public List<User> getList() {
+	
+	public List<Corporate> getList() {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
 		DBCollection collectionMongo = mongo.getCollection();
 		Gson gson = new Gson();
-		List<User> users = new ArrayList<User>();
+		List<Corporate> corporates = new ArrayList<Corporate>();
 		for (String serializable : listOne(collectionMongo, null)) {
-			User user = new User();
-			user = gson.fromJson(serializable, User.class);
-			users.add(user);
+			Corporate corporate = new Corporate();
+			corporate = gson.fromJson(serializable, Corporate.class);
+			corporates.add(corporate);
 		}
-		return users;
+		return corporates;
 	}
-
-	public List<User> consultOne(String key, String reg) {
+	
+	public List<Corporate> consultOne(String key, String reg) {
 		ConnectMongo mongo = ConnectMongo.getInstance();
 		mongo.setDb(database, collection);
 
@@ -67,15 +68,15 @@ public class UserDao {
 		BasicDBObject query = new BasicDBObject();
 		query.put(key, new BasicDBObject("$regex", reg).append("$options", "i"));
 		Gson gson = new Gson();
-		List<User> funcionarios = new ArrayList<User>();
+		List<Corporate> funcionarios = new ArrayList<Corporate>();
 		for (String serializable : listOne(collectionMongo, query)) {
-			User user = new User();
-			user = gson.fromJson(serializable, User.class);
-			funcionarios.add(user);
+			Corporate corporate = new Corporate();
+			corporate = gson.fromJson(serializable, Corporate.class);
+			funcionarios.add(corporate);
 		}
 		return funcionarios;
 	}
-
+	
 	private List<String> listOne(DBCollection database, DBObject query) {
 
 		DBCursor cursor = database.find(query);
