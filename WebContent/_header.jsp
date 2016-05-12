@@ -50,4 +50,5 @@ $(function () {
 		<li><a href="UserServlet">Users</a></li>
 		<li><a href="CorporateServlet">Corporates</a></li>
 		<li><a href="AccountServlet">Account</a></li>
+		<li><a href="SessionServlet?action=logout">Logout</a></li>
 	</ul>

@@ -24,9 +24,11 @@ public class SessionServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		// Action logout
-		if (action.equals("logout")) {
-			HttpSession session = request.getSession();
-			session.invalidate();
+		if (action != null){
+			if (action.equals("logout")) {
+				HttpSession session = request.getSession();
+				session.invalidate();
+			}
 		}
 		
 		response.sendRedirect("index.jsp");
@@ -39,6 +41,8 @@ public class SessionServlet extends HttpServlet {
 		User user = new User();
 		user.setEmail(request.getParameter("email"));
 		user.setPassword(request.getParameter("password"));
+		
+		// TODO: Check email and password
 		
 		// Check email and password to User
 		HttpSession session = request.getSession();
